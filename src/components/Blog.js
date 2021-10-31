@@ -12,12 +12,27 @@ const Blog = ({ blog, user, setBlogs }) => {
     const newLikes = blog.likes + 1;
     try {
       await blogService.like(blog.id, newLikes, user.token);
-      setBlogs(existingBlogs => {
-        const filteredBlogs = existingBlogs.filter(existingBlog => existingBlog.id !== blog.id);
-        return [...filteredBlogs, {...blog, likes: newLikes}];
-      })
+      setBlogs((existingBlogs) => {
+        const filteredBlogs = existingBlogs.filter(
+          (existingBlog) => existingBlog.id !== blog.id
+        );
+        return [...filteredBlogs, { ...blog, likes: newLikes }];
+      });
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  const deleteBlog = async () => {
+    if (window.confirm(`Remove ${blog.title} by ${blog.user.name}?`)) {
+      try {
+        await blogService.deleteBlog(blog.id, user.token);
+        setBlogs((existingBlogs) =>
+          existingBlogs.filter((existingBlog) => existingBlog.id !== blog.id)
+        );
+      } catch (e) {
+        console.error(e);
+      }
     }
   };
 
@@ -36,6 +51,11 @@ const Blog = ({ blog, user, setBlogs }) => {
           <button onClick={addLike}>like</button>
         </p>
         <p>{blog.user.name}</p>
+        {user.username === blog.user.username && (
+          <div>
+            <button onClick={deleteBlog}>Remove</button>
+          </div>
+        )}
       </div>
     </div>
   );
