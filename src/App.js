@@ -4,15 +4,32 @@ import blogService from './services/blogs';
 import loginService from './services/login';
 
 const App = () => {
+  const fetchUserStorage = () => {
+    return JSON.parse(localStorage.getItem('userData'));
+  };
+
+  const setUserStorage = (user) => {
+    localStorage.setItem('userData', JSON.stringify(user));
+  };
+
+  const destroyUser = () => {
+    setUser(null);
+    localStorage.removeItem('userData');
+  };
+
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(fetchUserStorage());
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
+
+  useEffect(() => {
+    setUserStorage(user);
+  }, [user]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -68,6 +85,9 @@ const App = () => {
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
+      <div>
+        <button onClick={destroyUser}>Logout</button>
+      </div>
     </div>
   );
 };
