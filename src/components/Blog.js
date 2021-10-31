@@ -1,11 +1,25 @@
 import React, { useState } from 'react';
+import blogService from '../services/blogs';
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user, setBlogs }) => {
   const [blogDetailDisplay, setBlogDetailDisplay] = useState(false);
+
   const toggleView = () => {
-    setBlogDetailDisplay(current => !current);
+    setBlogDetailDisplay((current) => !current);
   };
-  const addLike = () => {};
+
+  const addLike = async () => {
+    const newLikes = blog.likes + 1;
+    try {
+      await blogService.like(blog.id, newLikes, user.token);
+      setBlogs(existingBlogs => {
+        const filteredBlogs = existingBlogs.filter(existingBlog => existingBlog.id !== blog.id);
+        return [...filteredBlogs, {...blog, likes: newLikes}];
+      })
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <div style={{ border: '2px solid black', marginBottom: '8px' }}>
@@ -13,7 +27,9 @@ const Blog = ({ blog }) => {
         {blog.title} {blog.author}
         <button onClick={toggleView}>view</button>
       </p>
-      <div style={blogDetailDisplay ? {display: 'inline'} : {display: 'none'}}>
+      <div
+        style={blogDetailDisplay ? { display: 'inline' } : { display: 'none' }}
+      >
         <p>{blog.url}</p>
         <p>
           likes {blog.likes}
