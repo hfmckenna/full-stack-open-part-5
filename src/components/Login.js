@@ -3,11 +3,10 @@ import loginService from '../services/login';
 
 const Login = ({
   setUser,
-  username,
-  setUsername,
-  password,
-  setPassword,
 }) => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const [loginError, setLoginError] = useState('');
 
   const handleLogin = async (event) => {
@@ -32,7 +31,6 @@ const Login = ({
 
   return (
     <div>
-      <h2>Log in to blogs</h2>
       {loginError && <h3>{loginError}</h3>}
       <form onSubmit={handleLogin}>
         <div>

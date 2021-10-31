@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import Login from './components/Login';
 import CreateBlog from './components/CreateBlog';
+import Toggalable from './components/Toggalable';
 import blogService from './services/blogs';
 
 const App = () => {
@@ -19,9 +20,10 @@ const App = () => {
   };
 
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [user, setUser] = useState(fetchUserStorage());
+
+  const blogFormRef = useRef();
+  const loginFormRef = useRef();
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -37,13 +39,12 @@ const App = () => {
 
   if (user === null) {
     return (
-      <Login
-        setUser={setUser}
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-      />
+      <>
+        <h2>Log in to blogs</h2>
+        <Toggalable buttonLabel={'login'} ref={loginFormRef}>
+          <Login setUser={setUser} />
+        </Toggalable>
+      </>
     );
   }
   return (
@@ -53,7 +54,9 @@ const App = () => {
         <p>{user.name} is logged in</p>
         <button onClick={destroyUser}>Logout</button>
       </div>
-      <CreateBlog user={user} />
+      <Toggalable buttonLabel={'create new blog'} ref={blogFormRef}>
+        <CreateBlog user={user} />
+      </Toggalable>
       <div>
         {blogs.map((blog) => (
           <Blog key={blog.id} blog={blog} />

@@ -21,6 +21,12 @@ const CreateBlog = ({ user }) => {
     try {
       await blogs.create(newBlog, user.token);
       setSuccessMessage('Blog Added');
+      setNewBlog({
+        title: '',
+        author: '',
+        url: '',
+        likes: 0,
+      });
       setTimeout(() => {
         setSuccessMessage(null);
       }, 5000);
@@ -30,7 +36,6 @@ const CreateBlog = ({ user }) => {
         setErrorMessage(null);
       }, 5000);
     }
-
   };
 
   return (
