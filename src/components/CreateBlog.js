@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import blogs from '../services/blogs';
+import React, { useState } from 'react'
+import blogs from '../services/blogs'
 
 const CreateBlog = ({ user }) => {
   const [newBlog, setNewBlog] = useState({
@@ -7,36 +7,36 @@ const CreateBlog = ({ user }) => {
     author: '',
     url: '',
     likes: 0,
-  });
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  })
+  const [errorMessage, setErrorMessage] = useState('')
+  const [successMessage, setSuccessMessage] = useState('')
 
   const handleBlogChange = (event) => {
-    const { name, value } = event.target;
-    setNewBlog((existingBlog) => ({ ...existingBlog, [name]: value }));
-  };
+    const { name, value } = event.target
+    setNewBlog((existingBlog) => ({ ...existingBlog, [name]: value }))
+  }
 
   const submitBlog = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      await blogs.create(newBlog, user.token);
-      setSuccessMessage('Blog Added');
+      await blogs.create(newBlog, user.token)
+      setSuccessMessage('Blog Added')
       setNewBlog({
         title: '',
         author: '',
         url: '',
         likes: 0,
-      });
+      })
       setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
+        setSuccessMessage(null)
+      }, 5000)
     } catch (e) {
-      setErrorMessage(e.message);
+      setErrorMessage(e.message)
       setTimeout(() => {
-        setErrorMessage(null);
-      }, 5000);
+        setErrorMessage(null)
+      }, 5000)
     }
-  };
+  }
 
   return (
     <div>
@@ -77,7 +77,7 @@ const CreateBlog = ({ user }) => {
         <button>Create</button>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default CreateBlog;
+export default CreateBlog

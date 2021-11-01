@@ -1,41 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Blog from './components/Blog';
-import Login from './components/Login';
-import CreateBlog from './components/CreateBlog';
-import Toggalable from './components/Toggalable';
-import blogService from './services/blogs';
+import React, { useState, useEffect, useRef } from 'react'
+import Blog from './components/Blog'
+import Login from './components/Login'
+import CreateBlog from './components/CreateBlog'
+import Toggalable from './components/Toggalable'
+import blogService from './services/blogs'
 
 const App = () => {
   const fetchUserStorage = () => {
-    return JSON.parse(localStorage.getItem('userData'));
-  };
+    return JSON.parse(localStorage.getItem('userData'))
+  }
 
   const setUserStorage = (user) => {
-    localStorage.setItem('userData', JSON.stringify(user));
-  };
+    localStorage.setItem('userData', JSON.stringify(user))
+  }
 
   const destroyUser = () => {
-    setUser(null);
-    localStorage.removeItem('userData');
-  };
+    setUser(null)
+    localStorage.removeItem('userData')
+  }
 
-  const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(fetchUserStorage());
+  const [blogs, setBlogs] = useState([])
+  const [user, setUser] = useState(fetchUserStorage())
 
-  const blogFormRef = useRef();
-  const loginFormRef = useRef();
+  const blogFormRef = useRef()
+  const loginFormRef = useRef()
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const latestBlogs = await blogService.getAll();
-      setBlogs(latestBlogs);
-    };
-    fetchBlogs();
-  }, []);
+      const latestBlogs = await blogService.getAll()
+      setBlogs(latestBlogs)
+    }
+    fetchBlogs()
+  }, [])
 
   useEffect(() => {
-    setUserStorage(user);
-  }, [user]);
+    setUserStorage(user)
+  }, [user])
 
   if (user === null) {
     return (
@@ -45,7 +45,7 @@ const App = () => {
           <Login setUser={setUser} />
         </Toggalable>
       </>
-    );
+    )
   }
   return (
     <div>
@@ -70,7 +70,7 @@ const App = () => {
           ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

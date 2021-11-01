@@ -1,40 +1,40 @@
-import React, { useState } from 'react';
-import blogService from '../services/blogs';
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
 
 const Blog = ({ blog, user, setBlogs }) => {
-  const [blogDetailDisplay, setBlogDetailDisplay] = useState(false);
+  const [blogDetailDisplay, setBlogDetailDisplay] = useState(false)
 
   const toggleView = () => {
-    setBlogDetailDisplay((current) => !current);
-  };
+    setBlogDetailDisplay((current) => !current)
+  }
 
   const addLike = async () => {
-    const newLikes = blog.likes + 1;
+    const newLikes = blog.likes + 1
     try {
-      await blogService.like(blog.id, newLikes, user.token);
+      await blogService.like(blog.id, newLikes, user.token)
       setBlogs((existingBlogs) => {
         const filteredBlogs = existingBlogs.filter(
           (existingBlog) => existingBlog.id !== blog.id
-        );
-        return [...filteredBlogs, { ...blog, likes: newLikes }];
-      });
+        )
+        return [...filteredBlogs, { ...blog, likes: newLikes }]
+      })
     } catch (e) {
-      console.error(e);
+      console.error(e)
     }
-  };
+  }
 
   const deleteBlog = async () => {
     if (window.confirm(`Remove ${blog.title} by ${blog.user.name}?`)) {
       try {
-        await blogService.deleteBlog(blog.id, user.token);
+        await blogService.deleteBlog(blog.id, user.token)
         setBlogs((existingBlogs) =>
           existingBlogs.filter((existingBlog) => existingBlog.id !== blog.id)
-        );
+        )
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
     }
-  };
+  }
 
   return (
     <div style={{ border: '2px solid black', marginBottom: '8px' }}>
@@ -58,7 +58,7 @@ const Blog = ({ blog, user, setBlogs }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
